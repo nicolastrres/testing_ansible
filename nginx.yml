@@ -1,7 +1,12 @@
 - hosts: all
   tasks:
+   - name: Add Nginx repository
+     apt_repository: repo='ppa:nginx/stable' state=present
+     register: ppastable
    - name: Install nginx
      apt: pkg=nginx state=installed update_cache=true
+     when: ppastable|success
+     register: nginxinstalled
      notify:
       - Start nginx
 
